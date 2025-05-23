@@ -1,6 +1,6 @@
 # Anime Face Generation with Deep Convolutional GAN
 
-This project implements a Deep Convolutional Generative Adversarial Network (DCGAN) to generate anime-style face images using PyTorch. Trained on the Anime Face Dataset, the model leverages GPU acceleration and batch normalization for stable training and high-quality 128x128 pixel outputs.
+This project implements a Deep Convolutional Generative Adversarial Network (DCGAN) to generate anime-style face images using PyTorch. Trained on the Anime Face Dataset, the model generates high-quality 128x128 image outputs.
 
 ---
 
@@ -14,7 +14,7 @@ Generative Adversarial Networks (GANs) synthesize realistic data through adversa
 
 The DCGAN consists of:
 
-- **Generator**: Maps a 100-dimensional noise vector to a 128x128x3 RGB image using transposed convolutional layers.
+- **Generator**: Maps a 256-dimensional noise vector to a 128x128 RGB image using transposed convolutional layers.
 - **Discriminator**: Classifies images as real or fake using convolutional layers.
 
 Training uses binary cross-entropy loss, with the generator aiming to fool the discriminator and the discriminator distinguishing real from fake images.
@@ -35,28 +35,14 @@ Training uses binary cross-entropy loss, with the generator aiming to fool the d
 
 ## Implementation Details
 
-### Data Pipeline
-
-- Uses `torchvision.datasets.ImageFolder` and `torchvision.transforms` for preprocessing.
-- `DataLoader` with batch size 64, shuffling, and pinned memory.
-
 ### Training Strategy
 
-- **Optimizer**: Adam (β1=0.5, β2=0.999, learning rate=0.0002).
-- **Training Loop**: 100 epochs, 994 iterations per epoch.
+- **Optimizer**: Adam.
+- **Training Loop**: Trained for 100 epochs.
 - **Loss Monitoring**: Tracks generator and discriminator losses.
-
-### Optimizations
-
-- **GPU Acceleration**: CUDA-enabled training (\~2 minutes 13 seconds per epoch).
-- **Batch Normalization**: Enhances stability.
-- **Weight Saving**: Saves weights as `generator_weights_2.pth` and `discriminator_weights_2.pth`.
-
----
 
 ## Results and Observations
 
-- **Training Dynamics**: Generator loss \~2.99–3.05, discriminator loss \~0.52–0.53.
 - **Visual Quality**: Produces recognizable anime-style faces with minor checkerboard artifacts.
 - **Stability**: Batch normalization and low learning rate reduce mode collapse.
 
@@ -64,18 +50,17 @@ Training uses binary cross-entropy loss, with the generator aiming to fool the d
 
 ## Challenges and Limitations
 
-- **Checkerboard Artifacts**: Due to transposed convolutions.
-- **Mode Collapse**: Mitigated but present in early epochs.
+- **Checkerboard Artifacts**: Likely due to transposed convolutions with larger kernel size.
+- **Mode Collapse**: Present earlier but mitigated through hyperparameter tuning.
 - **Evaluation**: Lacks quantitative metrics like FID.
 
 ---
 
 ## Future Work
 
-- Explore advanced GAN variants (e.g., StyleGAN).
+- Explore advanced GAN variants (e.g. StyleGAN).
 - Implement FID and Inception Score for evaluation.
 - Add conditional generation for style control.
-- Use mixed-precision training for efficiency.
 
 ---
 
