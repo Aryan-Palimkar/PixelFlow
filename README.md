@@ -1,11 +1,11 @@
-# Anime Face Generation Project
+# Anime Face Generation
 
 This project explores generative modeling for anime-style face generation using two approaches: a Deep Convolutional Generative Adversarial Network (DCGAN) and a Denoising Diffusion Probabilistic Model (DDPM). Implemented in PyTorch, both models are trained on the Anime Face Dataset to produce 128x128 pixel images.
 
 ## Project Structure
 
-- **DCGAN**: Implements a DCGAN for generating anime faces via adversarial training. See [DCGAN/README.md](DCGAN/README.md) for details.
-- **Diffusion**: Implements a DDPM with a U-Net backbone for denoising-based image generation. See [Diffusion/README.md](Diffusion/README.md) for details.
+- **DCGAN**: Implements a DCGAN for generating anime faces. See [DCGAN/README.md](DCGAN/README.md) for details.
+- **Diffusion**: Implements a DDPM denoising-based image generation. See [Diffusion/README.md](Diffusion/README.md) for details.
 
 ## Dataset
 
