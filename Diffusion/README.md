@@ -4,19 +4,19 @@ This project implements a denoising diffusion probabilistic model (DDPM) using a
 
 ---
 
-## 📌 Overview
+## Overview
 
-Diffusion models are generative frameworks that learn to denoise random noise across a series of time steps. This project focuses on an image-space diffusion process using a U-Net with attention and timestep embeddings. The implementation is written in PyTorch with several performance improvements like `torch.compile`, fused optimizers, and automatic mixed precision (AMP).
+Diffusion models are generative models that learn to denoise random noise across a series of time steps. This project focuses on an image-space diffusion process using a U-Net with attention and timestep embeddings. The implementation is written in PyTorch with several performance improvements like ahead-of-time (AOT) compilation, fused optimizers, and automatic mixed precision (AMP).
 
 ---
 
-## 🧠 Methodology
+## Methodology
 
 The model is trained to predict the noise added to a clean image at a given timestep. The forward process (adding noise) is fixed, and the model learns the reverse process (denoising) by minimizing a simplified variational loss (mean squared error between predicted and actual noise).
 
 ---
 
-## 🏗️ Model Architecture
+## Model Architecture
 
 * **U-Net Backbone**: Symmetric encoder-decoder with skip connections.
 * **Residual Blocks**: Used in both encoder and decoder paths.
@@ -26,7 +26,7 @@ The model is trained to predict the noise added to a clean image at a given time
 
 ---
 
-## ⚡ Optimization Techniques
+## Optimization Techniques
 
 This implementation incorporates multiple optimization strategies:
 
@@ -39,13 +39,12 @@ This implementation incorporates multiple optimization strategies:
   * EMA weights are maintained separately and used during inference.
   * Helps reduce artifacts and improves output quality in later stages of training.
 * **Efficient Scheduling**:
-
-  * Cosine learning rate scheduler (`CosineAnnealingLR`)
+  * Used CosineAnnealingLR
   * Cosine beta noise schedule for smooth forward process
 
 ---
 
-## 🏋️ Training Strategy
+## Training Strategy
 
 * **Objective**: Mean Squared Error (MSE) between predicted and actual noise.
 * **Optimizer**: AdamW, β1=0.9, β2=0.999.
@@ -55,33 +54,34 @@ This implementation incorporates multiple optimization strategies:
 
 ---
 
-## 🎲 Sampling Process
+## Sampling Process(DDIM-sampling)
 
 At inference time:
 
 1. Start from a pure Gaussian noise sample.
 2. Apply the trained model iteratively to predict and remove noise across timesteps.
-3. Sampling parameters (e.g., number of steps, `eta`) affect diversity vs. fidelity.
+3. Parameters (e.g., number of steps, `eta`) affect diversity vs. fidelity.
 
 ---
 
-## 📈 Observations & Results
+## Observations & Results
 
-* During training, checkerboard patterns and "void face" artifacts were observed when using perceptual loss or an improperly tuned beta schedule.
-* The MSE loss provided more stable convergence and produced visually coherent samples.
+* During training, checkerboard patterns and "void face" artifacts were observed when using perceptual loss, primarily due to an overly high perceptual loss weight.
+* Switching to MSE loss led to more stable training dynamics and consistently produced sharper, artifact free outputs.
+* Performance improved further by reducing the perceptual loss weight.
 * Incorporating attention layers greatly enhanced the model's ability to maintain global consistency in generated images.
 * Leveraging `torch.compile` and AMP resulted in a noticeable 35-40% improvement in training speed compared to standard FP32 precision.
 
 ---
 
-## 🧪 Future Work
+## Future Work
 
-* Experiment with VQ embeddings or latent-space diffusion (VAE + DDPM).
+* Experiment with VQ embeddings or latent-space diffusion.
 * Explore image-to-image and text-to-image tasks.
 
 ---
 
-## 📚 References
+## References
 
 * Ho et al., *Denoising Diffusion Probabilistic Models*, NeurIPS 2020
 * Nichol & Dhariwal, *Improved Denoising Diffusion Probabilistic Models*, ICML 2021
